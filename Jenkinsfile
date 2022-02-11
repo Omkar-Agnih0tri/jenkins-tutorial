@@ -15,5 +15,25 @@ pipeline {
           }
         }
       }
+      stage("K8s Deployment"){
+          steps{
+             sh "chmod +x myscript.sh"
+             sh "sh myscript.sh ${BUILD_ID}"
+ 
+             sshagent(['ubuntu']) {
+                 sh "scp -o StrictHostKeyChecking=no  newdep.yaml ubuntu@65.2.35.6:/home/ubuntu"
+                 script{
+                   try{
+                      sh "ssh ubuntu@65.0.178.67 kubectl create -f newdep.yaml"
+                   }
+                   catch(error){
+                        sh "ssh ubuntu@65.0.178.67 kubectl apply -f newdep.yaml"
+                   }
+                
+                 }
+             }           
+            
+          }
+      }
     }
 }
