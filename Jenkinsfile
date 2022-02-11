@@ -3,7 +3,7 @@ pipeline {
     stages {
       stage("Build Docker image"){
         steps{
-          sh "docker build -t jenkins/build:v1 ."
+          sh "docker build -t user9595481/jenkins:v1 ."
 
         }
       }
